@@ -18,18 +18,6 @@
 </section>
 <script>
   $(function() {
-    $('#new-form').submit(function(event) {
-    event.preventDefault();
-    var textbox = $('.new-todo');
-    var payload = {
-      task: {
-        title: textbox.val()
-      }
-    };
-    $.post("/tasks", payload).then(function(data) {
-      console.log("Successful HTTP Request");
-    });
-  });
 
     // The taskHtml method takes in a JavaScript representation
     // of the task and produces an HTML representation using
@@ -75,6 +63,22 @@
       ulTodos.html(htmlString);
 
       $('.toggle').change(toggleTask);
+    });
+
+    $('#new-form').submit(function(event) {
+      event.preventDefault();
+      var textbox = $('.new-todo');
+      var payload = {
+        task: {
+          title: textbox.val()
+        }
+      };
+      $.post("/tasks", payload).then(function(data) {
+          var htmlString = taskHtml(data);
+          var ulTodos = $('.todo-list');
+          ulTodos.append(htmlString);
+          $('.toggle').click(toggleTask);
+      });
     });
   });
 </script>
